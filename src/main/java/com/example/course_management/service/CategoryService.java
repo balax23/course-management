@@ -1,6 +1,9 @@
 package com.example.course_management.service;
 
+import com.example.course_management.dto.CategoryCreateRequest;
+import com.example.course_management.dto.CategoryResponse;
 import com.example.course_management.entity.Category;
+import com.example.course_management.mapper.CategoryMapper;
 import com.example.course_management.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,14 +17,25 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
-    public Category createCategory(Category category) {
-        log.info("Creating category with name: {}", category.getName());
-        return categoryRepository.save(category);
+    public CategoryResponse createCategory(CategoryCreateRequest request) {
+        log.info("Creating category with name: {}", request.getName());
+
+        Category category = Category.builder()
+                .name(request.getName())
+                .build();
+
+        Category savedCategory = categoryRepository.save(category);
+        return categoryMapper.toResponse(savedCategory);
     }
 
-    public List<Category> getAllCategories() {
+    public List<CategoryResponse> getAllCategories() {
         log.info("Fetching all categories");
-        return categoryRepository.findAll();
+
+        return categoryRepository.findAll()
+                .stream()
+                .map(categoryMapper::toResponse)
+                .toList();
     }
 }
