@@ -1,16 +1,17 @@
-# Course Management System
+# Course Management
 
 ## Projekt leírása
-Ez a projekt egy kurzuskezelő rendszer, amely Spring Boot, Java 17, MySQL, H2, HTML, CSS és JavaScript használatával készült.
+Ez a projekt egy kurzuskezelő rendszer, amely a záróvizsga gyakorlati feladatához készült.  
+A rendszer Spring Boot, Java 17, MySQL, H2, HTML, CSS és JavaScript használatával lett megvalósítva.
 
 Az alkalmazás lehetővé teszi:
-- kurzusok létrehozását és kezelését
+- kurzusok létrehozását, lekérdezését, módosítását és törlését
 - felhasználók létrehozását és listázását
 - kategóriák létrehozását és listázását
 - oktatók hozzárendelését kurzusokhoz
 - hallgatók feliratkoztatását kurzusokra
 
-A rendszer bemutatja:
+A projekt bemutatja:
 - a réteges architektúrát
 - DTO-k használatát
 - REST API fejlesztést
@@ -44,6 +45,8 @@ A rendszer bemutatja:
 ---
 
 ## Projekt felépítése
+A projekt főbb csomagjai és mappái:
+
 - `controller` – REST vezérlők
 - `service` – üzleti logika
 - `repository` – adatbázis elérés
@@ -51,16 +54,18 @@ A rendszer bemutatja:
 - `dto` – adatátviteli objektumok
 - `mapper` – entitás–DTO leképezés
 - `exception` – egyedi kivételkezelés
-- `static` – frontend fájlok
-- `test` – unit és integration tesztek
+- `src/main/resources/static` – frontend fájlok
+- `src/test` – unit és integration tesztek
+- `src/docs` – UML és adatbázis diagramok
+- `src/postman` – Postman kollekció
 
 ---
 
 ## Adatbázisterv
-Fő entitások:
-- User
-- Course
-- Category
+A rendszer fő entitásai:
+- `User`
+- `Course`
+- `Category`
 
 Kapcsolatok:
 - Egy oktató több kurzust is tarthat (`ManyToOne`)
@@ -80,10 +85,14 @@ Kapcsolatok:
 - naplózás SLF4J használatával
 
 ### Frontend
+- felhasználó létrehozása
+- kategória létrehozása
 - kurzus létrehozása
 - kurzusok listázása
 - kurzus törlése
 - hallgató feliratkoztatása kurzusra
+- dinamikus kiválasztás legördülőkkel és checkboxokkal
+- egyszerű statisztikai dashboard
 
 ### Tesztelés
 - unit tesztek a service réteghez
@@ -108,6 +117,24 @@ Kapcsolatok:
 - `PUT /api/courses/{id}`
 - `DELETE /api/courses/{id}`
 - `POST /api/courses/{courseId}/enroll/{studentId}`
+
+---
+
+## DTO-k
+A projekt külön DTO-kat használ az adatátvitelhez.
+
+Példák:
+- `CourseCreateRequest`
+- `CourseResponse`
+- `UserCreateRequest`
+- `UserResponse`
+- `CategoryCreateRequest`
+- `CategoryResponse`
+
+Ez segíti:
+- a tisztább rétegszétválasztást
+- a validációt
+- az entitások közvetlen kiexponálásának elkerülését
 
 ---
 
