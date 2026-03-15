@@ -16,7 +16,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
+    public Category createCategory(@jakarta.validation.Valid @RequestBody Category category) {
         return categoryService.createCategory(category);
     }
 
