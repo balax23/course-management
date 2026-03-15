@@ -123,3 +123,11 @@ Hozz létre egy `course_management` nevű adatbázist:
 
 ```sql
 CREATE DATABASE course_management;
+Az alkalmazás az adatbázis felhasználónevét és jelszavát környezeti változókból olvassa be.
+
+Az `application.properties` fájlban ez szerepel:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/course_management?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+spring.datasource.username=${DB_USERNAME:root}
+spring.datasource.password=${DB_PASSWORD:root}
