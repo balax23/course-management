@@ -3,6 +3,7 @@ package com.example.course_management;
 import com.example.course_management.entity.Category;
 import com.example.course_management.entity.User;
 import com.example.course_management.repository.CategoryRepository;
+import com.example.course_management.repository.CourseRepository;
 import com.example.course_management.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +33,16 @@ class CourseControllerIntegrationTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private CourseRepository courseRepository;
+
+    private Long instructorId;
+    private Long studentId;
+    private Long categoryId;
+
     @BeforeEach
     void setUp() {
+        courseRepository.deleteAll();
         categoryRepository.deleteAll();
         userRepository.deleteAll();
 
@@ -47,14 +56,18 @@ class CourseControllerIntegrationTest {
                 .email("peter@test.com")
                 .build();
 
-        userRepository.save(instructor);
-        userRepository.save(student);
+        instructor = userRepository.save(instructor);
+        student = userRepository.save(student);
 
         Category category = Category.builder()
                 .name("Programming")
                 .build();
 
-        categoryRepository.save(category);
+        category = categoryRepository.save(category);
+
+        instructorId = instructor.getId();
+        studentId = student.getId();
+        categoryId = category.getId();
     }
 
     @Test
@@ -70,11 +83,11 @@ class CourseControllerIntegrationTest {
                   "title": "Spring Boot Basics",
                   "description": "Intro course",
                   "durationInHours": 20,
-                  "instructorId": 1,
-                  "categoryIds": [1],
-                  "studentIds": [2]
+                  "instructorId": %d,
+                  "categoryIds": [%d],
+                  "studentIds": [%d]
                 }
-                """;
+                """.formatted(instructorId, categoryId, studentId);
 
         mockMvc.perform(post("/api/courses")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -91,11 +104,11 @@ class CourseControllerIntegrationTest {
                   "title": "",
                   "description": "Intro course",
                   "durationInHours": 20,
-                  "instructorId": 1,
-                  "categoryIds": [1],
-                  "studentIds": [2]
+                  "instructorId": %d,
+                  "categoryIds": [%d],
+                  "studentIds": [%d]
                 }
-                """;
+                """.formatted(instructorId, categoryId, studentId);
 
         mockMvc.perform(post("/api/courses")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -110,18 +123,20 @@ class CourseControllerIntegrationTest {
                   "title": "Spring Boot Basics",
                   "description": "Intro course",
                   "durationInHours": 20,
-                  "instructorId": 1,
-                  "categoryIds": [1],
-                  "studentIds": [2]
+                  "instructorId": %d,
+                  "categoryIds": [%d],
+                  "studentIds": [%d]
                 }
-                """;
+                """.formatted(instructorId, categoryId, studentId);
 
         mockMvc.perform(post("/api/courses")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(delete("/api/courses/1"))
+        Long createdCourseId = courseRepository.findAll().get(0).getId();
+
+        mockMvc.perform(delete("/api/courses/" + createdCourseId))
                 .andExpect(status().isOk());
     }
 }

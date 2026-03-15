@@ -316,14 +316,14 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/courses/2/enroll/2",
+              "raw": "{{baseUrl}}/api/courses/1/enroll/2",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "courses",
-                "2",
+                "1",
                 "enroll",
                 "2"
               ]
