@@ -1,4 +1,4 @@
-package com.example.course_management.dto;
+package com.example.course_management.mapper;
 
 import com.example.course_management.dto.CategoryResponse;
 import com.example.course_management.entity.Category;
