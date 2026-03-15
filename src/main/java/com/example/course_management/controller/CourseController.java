@@ -22,6 +22,11 @@ public class CourseController {
         return courseService.createCourse(request);
     }
 
+    @PostMapping("/{courseId}/enroll/{studentId}")
+    public CourseResponse enrollStudent(@PathVariable Long courseId, @PathVariable Long studentId) {
+        return courseService.enrollStudent(courseId, studentId);
+    }
+
     @GetMapping
     public List<CourseResponse> getAllCourses() {
         return courseService.getAllCourses();

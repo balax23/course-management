@@ -126,4 +126,20 @@ public class CourseService {
                         .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId)))
                 .collect(Collectors.toSet());
     }
+    public CourseResponse enrollStudent(Long courseId, Long studentId) {
+        log.info("Enrolling student {} to course {}", studentId, courseId);
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + courseId));
+
+        User student = userRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + studentId));
+
+        course.getStudents().add(student);
+
+        Course updatedCourse = courseRepository.save(course);
+        log.info("Student {} enrolled successfully to course {}", studentId, courseId);
+
+        return courseMapper.toResponse(updatedCourse);
+    }
 }
